@@ -14,7 +14,6 @@ public class BattleHUD : MonoBehaviour
     public Text botName;
     public HealthBar botHp;
 
-    public Transform playerOne;
 
     public void setHUD(PFieldManager field)
     {
@@ -32,6 +31,8 @@ public class BattleHUD : MonoBehaviour
         botName.text = list[2].unitName;
         botHp.GetComponent<Slider>().maxValue = list[2].maxHP;
         botHp.GetComponent<Slider>().value = list[2].currentHP;
+
+        return;
     }
 
     public void setHP(int hp)

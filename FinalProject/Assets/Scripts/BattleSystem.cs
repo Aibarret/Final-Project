@@ -7,6 +7,8 @@ public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST}
 
 public class BattleSystem : MonoBehaviour
 {
+    public string debug;
+
     public BattleState state;
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
@@ -42,24 +44,35 @@ public class BattleSystem : MonoBehaviour
     IEnumerator setUpBattle(GameObject[] playerTeam, GameObject[] enemyTeam)
     {
 
+        dialogue.text = "Battle Start!";
+
         pField = playerField.GetComponent<PFieldManager>();
         pField.initializeField(playerTeam, false);
+
+        debug = "moot";
 
         eField = enemyField.GetComponent<PFieldManager>();
         eField.initializeField(enemyTeam, true);
 
+        debug = "soot";
+
         playerHUD.setHUD(pField);
+
+        debug = "toot";
+
         enemyHUD.setHUD(eField);
+
+        debug = "doot";
 
         yield return new WaitForSeconds(2f);
 
-        //state = BattleState.PLAYERTURN;
-        //playerTurn();
+        state = BattleState.PLAYERTURN;
+        playerTurn();
     }
 
     void playerTurn()
     {
-        dialogue.text = "Choose an action: ";
+        dialogue.text = "Player Turn!";
     }
 
     IEnumerator playerAttack()
