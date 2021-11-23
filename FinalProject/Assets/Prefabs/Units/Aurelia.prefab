@@ -126,10 +126,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90ed298e3980d1b45997017b90ca4998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitName: 
+  unitName: Aurelia
   unitLevel: 0
-  damage: 0
-  maxHP: 0
-  currentHP: 0
+  damage: 3
+  maxHP: 15
+  currentHP: 15
   slider: {fileID: 0}
   graphic: {fileID: 7957884445183499780}

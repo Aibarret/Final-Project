@@ -33,4 +33,9 @@ public class PFieldManager : MonoBehaviour
             botUnit.flip();
         }
     }
+
+    public Unit[] getUnits()
+    {
+        return new Unit[3] { frontUnit, topUnit, botUnit };   
+    }
 }

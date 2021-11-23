@@ -48,8 +48,8 @@ public class BattleSystem : MonoBehaviour
         eField = enemyField.GetComponent<PFieldManager>();
         eField.initializeField(enemyTeam, true);
 
-        //playerHUD.setHUD(playerUnit);
-        //enemyHUD.setHUD(enemyUnit);
+        playerHUD.setHUD(pField);
+        enemyHUD.setHUD(eField);
 
         yield return new WaitForSeconds(2f);
 

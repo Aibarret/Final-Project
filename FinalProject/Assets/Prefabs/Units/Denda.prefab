@@ -44,11 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90ed298e3980d1b45997017b90ca4998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitName: 
+  unitName: Denda
   unitLevel: 0
-  damage: 0
-  maxHP: 0
-  currentHP: 0
+  damage: 5
+  maxHP: 19
+  currentHP: 19
   slider: {fileID: 0}
   graphic: {fileID: 7191218109050111204}
 --- !u!1 &7191218109050111204
