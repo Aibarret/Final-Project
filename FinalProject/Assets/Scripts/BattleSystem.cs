@@ -43,26 +43,16 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator setUpBattle(GameObject[] playerTeam, GameObject[] enemyTeam)
     {
-
         dialogue.text = "Battle Start!";
 
         pField = playerField.GetComponent<PFieldManager>();
         pField.initializeField(playerTeam, false);
 
-        debug = "moot";
-
         eField = enemyField.GetComponent<PFieldManager>();
         eField.initializeField(enemyTeam, true);
 
-        debug = "soot";
-
         playerHUD.setHUD(pField);
-
-        debug = "toot";
-
         enemyHUD.setHUD(eField);
-
-        debug = "doot";
 
         yield return new WaitForSeconds(2f);
 
@@ -72,6 +62,7 @@ public class BattleSystem : MonoBehaviour
 
     void playerTurn()
     {
+
         dialogue.text = "Player Turn!";
     }
 
@@ -161,5 +152,17 @@ public class BattleSystem : MonoBehaviour
             return;
         }
         StartCoroutine(playerHeal());
+    }
+
+    public void OnRight()
+    {
+        pField.rotate(true);
+        playerHUD.setHUD(pField);
+    }
+
+    public void OnLeft()
+    {
+        pField.rotate(false);
+        playerHUD.setHUD(pField);
     }
 }
