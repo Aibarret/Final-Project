@@ -4,13 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST}
+
 public class BattleSystem : MonoBehaviour
 {
     public BattleState state;
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
-    public Transform playerField;
-    public Transform enemyField;
+
+    public GameObject playerField;
+    PFieldManager pField;
+
+    public GameObject enemyField;
+    PFieldManager eField;
 
     public Text dialogue;
 
@@ -24,26 +29,32 @@ public class BattleSystem : MonoBehaviour
     void Start()
     {
         state = BattleState.START;
-        StartCoroutine(setUpBattle());
+
+        GameObject units = GameObject.Find("Units");
+        AvailibleUnits unitList = units.GetComponent<AvailibleUnits>();
+
+        GameObject[] testPlayerTeam = new GameObject[3] { unitList.Andy, unitList.Aurelia, unitList.Denda };
+        GameObject[] testEnemyTeam = new GameObject[3] { unitList.Spike, unitList.Zantz, unitList.Rione };
+
+        StartCoroutine(setUpBattle(testPlayerTeam, testEnemyTeam));
     }
 
-    IEnumerator setUpBattle()
+    IEnumerator setUpBattle(GameObject[] playerTeam, GameObject[] enemyTeam)
     {
-        GameObject playerGO = Instantiate(playerPrefab, playerField);
-        playerUnit = playerGO.GetComponent<Unit>();
 
-        GameObject enemyGO = Instantiate(enemyPrefab, enemyField);
-        enemyUnit = enemyGO.GetComponent<Unit>();
+        pField = playerField.GetComponent<PFieldManager>();
+        pField.initializeField(playerTeam, false);
 
-        dialogue.text = "A wild " + enemyUnit.unitName + " Stands Before you!";
+        eField = enemyField.GetComponent<PFieldManager>();
+        eField.initializeField(enemyTeam, true);
 
-        playerHUD.setHUD(playerUnit);
-        enemyHUD.setHUD(enemyUnit);
+        //playerHUD.setHUD(playerUnit);
+        //enemyHUD.setHUD(enemyUnit);
 
         yield return new WaitForSeconds(2f);
 
-        state = BattleState.PLAYERTURN;
-        playerTurn();
+        //state = BattleState.PLAYERTURN;
+        //playerTurn();
     }
 
     void playerTurn()

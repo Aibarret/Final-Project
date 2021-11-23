@@ -12,6 +12,13 @@ public class Unit : MonoBehaviour
     public int currentHP;
     public HealthBar slider;
 
+    public GameObject graphic;
+
+    public void flip()
+    {
+        graphic.GetComponent<SpriteRenderer>().flipX = true;
+    }
+
     public bool takeDamage(int dmg)
     {
         currentHP -= dmg;
