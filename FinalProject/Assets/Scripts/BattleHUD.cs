@@ -13,7 +13,7 @@ public class BattleHUD : MonoBehaviour
 
     public Text botName;
     public HealthBar botHp;
-
+    
 
     public void setHUD(PFieldManager field)
     {
@@ -21,15 +21,15 @@ public class BattleHUD : MonoBehaviour
         frontName.text = list[0].unitName;
 
         frontName.text = list[0].unitName;
-        frontHp.setHealth(list[0].maxHP);
+        frontHp.setMaxHealth(list[0].maxHP);
         frontHp.setHealth(list[0].currentHP);
 
         topName.text = list[1].unitName;
-        topHp.setHealth(list[1].maxHP);
+        topHp.setMaxHealth(list[1].maxHP);
         topHp.setHealth(list[1].currentHP);
 
         botName.text = list[2].unitName;
-        botHp.setHealth(list[2].maxHP);
+        botHp.setMaxHealth(list[2].maxHP);
         botHp.setHealth(list[2].currentHP);
 
         return;

@@ -7,14 +7,31 @@ public class Unit : MonoBehaviour
     public string unitName;
     public int unitLevel;
     public int damage;
+    public int defense;
+
+    public int accuracy;
+    public int evasion;
 
     private int position;
+    public bool isEnemy;
 
     public int maxHP;
     public int currentHP;
     public HealthBar slider;
 
     public GameObject graphic;
+
+    public Attributes attributeScript;
+
+    public Attributes GetAttributes()
+    {
+        return attributeScript;
+    }
+
+    private void Start()
+    {
+        
+    }
 
     public int getPosition()
     {
@@ -31,18 +48,7 @@ public class Unit : MonoBehaviour
         graphic.GetComponent<SpriteRenderer>().flipX = true;
     }
 
-    public bool takeDamage(int dmg)
-    {
-        currentHP -= dmg;
-
-        if (currentHP <= 0)
-        {
-            return true;
-        } else
-        {
-            return false;
-        }
-    }
+    
 
     public void heal(int amount)
     {

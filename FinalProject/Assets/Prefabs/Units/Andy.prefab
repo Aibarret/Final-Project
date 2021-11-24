@@ -92,6 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6721379317209196118}
   - component: {fileID: 1372647700217576946}
+  - component: {fileID: 6276361589083249187}
   m_Layer: 0
   m_Name: Andy
   m_TagString: Untagged
@@ -129,7 +130,24 @@ MonoBehaviour:
   unitName: Andy
   unitLevel: 53
   damage: 6
+  defense: 0
+  accuracy: 0
+  evasion: 0
   maxHP: 26
   currentHP: 26
   slider: {fileID: 0}
   graphic: {fileID: 2605829401502143364}
+  attributeScript: {fileID: 6276361589083249187}
+--- !u!114 &6276361589083249187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2809930524744880855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b549a199bcf3b2c45a287fc8a6fdf350, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitScript: {fileID: 1372647700217576946}

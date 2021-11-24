@@ -31,6 +31,10 @@ public class PFieldManager : MonoBehaviour
         botUnit = botGO.GetComponent<Unit>();
         botUnit.setPosition(2);
 
+        frontUnit.isEnemy = isEnemy;
+        topUnit.isEnemy = isEnemy;
+        botUnit.isEnemy = isEnemy;
+
         if (isEnemy)
         {
             frontUnit.flip();

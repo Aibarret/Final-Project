@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6577613168513370113}
   - component: {fileID: 107547951241906269}
+  - component: {fileID: 4248503146656770672}
   m_Layer: 0
   m_Name: Zantz
   m_TagString: Untagged
@@ -47,10 +48,28 @@ MonoBehaviour:
   unitName: Zantz
   unitLevel: 0
   damage: 14
+  defense: 0
+  accuracy: 0
+  evasion: 0
+  isEnemy: 0
   maxHP: 15
   currentHP: 15
   slider: {fileID: 0}
   graphic: {fileID: 3180924768845408117}
+  attributeScript: {fileID: 4248503146656770672}
+--- !u!114 &4248503146656770672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 753136259714376965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b549a199bcf3b2c45a287fc8a6fdf350, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitScript: {fileID: 107547951241906269}
 --- !u!1 &3180924768845408117
 GameObject:
   m_ObjectHideFlags: 0

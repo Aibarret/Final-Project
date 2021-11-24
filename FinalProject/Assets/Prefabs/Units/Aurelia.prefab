@@ -92,6 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5866189293038852746}
   - component: {fileID: 1980531953214548171}
+  - component: {fileID: 6332741313103692975}
   m_Layer: 0
   m_Name: Aurelia
   m_TagString: Untagged
@@ -129,7 +130,25 @@ MonoBehaviour:
   unitName: Aurelia
   unitLevel: 0
   damage: 3
+  defense: 0
+  accuracy: 0
+  evasion: 0
+  isEnemy: 0
   maxHP: 15
   currentHP: 15
   slider: {fileID: 0}
   graphic: {fileID: 7957884445183499780}
+  attributeScript: {fileID: 6332741313103692975}
+--- !u!114 &6332741313103692975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8435213797004986901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b549a199bcf3b2c45a287fc8a6fdf350, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitScript: {fileID: 1980531953214548171}

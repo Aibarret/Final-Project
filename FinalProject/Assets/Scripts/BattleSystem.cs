@@ -76,28 +76,33 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator playerAttack()
     {
-        //bool isDead = enemyUnit.takeDamage(playerUnit.damage);
+        Unit[] attackUnits = pField.getUnits();
+        dialogue.text = attackUnits[0].unitName + " attacks!";
 
-        //enemyHUD.setHP(enemyUnit.currentHP);
-        //dialogue.text = "The attack is successful!";
+        yield return new WaitForSeconds(1f);
 
-        yield return new WaitForSeconds(2f);
+        Unit attacker = pField.getUnits()[0];
+        Unit target = eField.getUnits()[targetPosn];
 
-        //if (isDead)
-        //{
-        //    state = BattleState.WON;
-        //    EndBattle();
-        //}
-        //else
-        //{
-        //    state = BattleState.ENEMYTURN;
-        //    StartCoroutine(EnemyTurn());
-        //}
+        int hitPercentage = attacker.accuracy - target.evasion;
+
+        if (Random.Range(1, 101) >= hitPercentage)
+        {
+            dialogue.text = "Deals " + ABIcalcOffenseDefense(attacker.GetAttributes(), target.GetAttributes()) + " damage!";
+            target.GetAttributes().takeDamage(ABIcalcOffenseDefense(attacker.GetAttributes(), target.GetAttributes()));
+        }
+        else
+        {
+            dialogue.text = "They missed!";
+        }
+
+        StartCoroutine(EnemyTurn());
+
 
     }
 
-    //IEnumerator EnemyTurn()
-    //{
+    IEnumerator EnemyTurn()
+    {
     //    dialogue.text = enemyUnit.unitName + " attacks!";
 
     //    yield return new WaitForSeconds(1f);
@@ -106,7 +111,7 @@ public class BattleSystem : MonoBehaviour
 
     //    playerHUD.setHP(playerUnit.currentHP);
 
-    //    yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1f);
 
     //    if (isDead)
     //    {
@@ -118,7 +123,7 @@ public class BattleSystem : MonoBehaviour
     //        state = BattleState.PLAYERTURN;
     //        playerTurn();
     //    }
-    //}
+    }
 
     void EndBattle()
     {
@@ -181,6 +186,34 @@ public class BattleSystem : MonoBehaviour
                 targetPosn = 0;
             }
             setTarget(targetPosn);
+        }
+    }
+
+    // Furthur functions are intended to be used exclusivly by Abilties
+
+    public void ABIupdateHealth(int hp, bool isEnemy, int target)
+    {
+        if (isEnemy)
+        {
+            enemyHUD.setHP(hp, target);
+        }
+        else
+        {
+            playerHUD.setHP(hp, target);
+        }
+    }
+
+    public int ABIcalcOffenseDefense(Attributes attacker, Attributes defender)
+    {
+        int difference = attacker.offense() - defender.defense();
+
+        if (difference < 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return difference;
         }
     }
 }
