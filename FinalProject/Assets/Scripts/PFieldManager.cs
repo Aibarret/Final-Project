@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PFieldManager : MonoBehaviour
 {
-    public GameObject frontGO;
-    public GameObject topGO;
-    public GameObject botGO;
+    private GameObject frontGO;
+    private GameObject topGO;
+    private GameObject botGO;
 
     private Unit frontUnit;
     private Unit topUnit;
@@ -23,8 +23,13 @@ public class PFieldManager : MonoBehaviour
         botGO = Instantiate(units[2], botSlot);
 
         frontUnit = frontGO.GetComponent<Unit>();
+        frontUnit.setPosition(0);
+
         topUnit = topGO.GetComponent<Unit>();
+        topUnit.setPosition(1);
+        
         botUnit = botGO.GetComponent<Unit>();
+        botUnit.setPosition(2);
 
         if (isEnemy)
         {

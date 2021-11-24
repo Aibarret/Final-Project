@@ -8,11 +8,23 @@ public class Unit : MonoBehaviour
     public int unitLevel;
     public int damage;
 
+    private int position;
+
     public int maxHP;
     public int currentHP;
     public HealthBar slider;
 
     public GameObject graphic;
+
+    public int getPosition()
+    {
+        return position;
+    }
+
+    public void setPosition(int posn)
+    {
+        position = posn;
+    }
 
     public void flip()
     {

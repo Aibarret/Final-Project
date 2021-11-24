@@ -68,49 +68,49 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator playerAttack()
     {
-        bool isDead = enemyUnit.takeDamage(playerUnit.damage);
+        //bool isDead = enemyUnit.takeDamage(playerUnit.damage);
 
-        enemyHUD.setHP(enemyUnit.currentHP);
-        dialogue.text = "The attack is successful!";
+        //enemyHUD.setHP(enemyUnit.currentHP);
+        //dialogue.text = "The attack is successful!";
 
         yield return new WaitForSeconds(2f);
 
-        if (isDead)
-        {
-            state = BattleState.WON;
-            EndBattle();
-        }
-        else
-        {
-            state = BattleState.ENEMYTURN;
-            StartCoroutine(EnemyTurn());
-        }
+        //if (isDead)
+        //{
+        //    state = BattleState.WON;
+        //    EndBattle();
+        //}
+        //else
+        //{
+        //    state = BattleState.ENEMYTURN;
+        //    StartCoroutine(EnemyTurn());
+        //}
 
     }
 
-    IEnumerator EnemyTurn()
-    {
-        dialogue.text = enemyUnit.unitName + " attacks!";
+    //IEnumerator EnemyTurn()
+    //{
+    //    dialogue.text = enemyUnit.unitName + " attacks!";
 
-        yield return new WaitForSeconds(1f);
+    //    yield return new WaitForSeconds(1f);
 
-        bool isDead = playerUnit.takeDamage(enemyUnit.damage);
+    //    bool isDead = playerUnit.takeDamage(enemyUnit.damage);
 
-        playerHUD.setHP(playerUnit.currentHP);
+    //    playerHUD.setHP(playerUnit.currentHP);
 
-        yield return new WaitForSeconds(1f);
+    //    yield return new WaitForSeconds(1f);
 
-        if (isDead)
-        {
-            state = BattleState.LOST;
-            EndBattle();
-        }
-        else
-        {
-            state = BattleState.PLAYERTURN;
-            playerTurn();
-        }
-    }
+    //    if (isDead)
+    //    {
+    //        state = BattleState.LOST;
+    //        EndBattle();
+    //    }
+    //    else
+    //    {
+    //        state = BattleState.PLAYERTURN;
+    //        playerTurn();
+    //    }
+    //}
 
     void EndBattle()
     {
@@ -123,19 +123,6 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    IEnumerator playerHeal()
-    {
-        playerUnit.heal(5);
-
-        playerHUD.setHP(playerUnit.currentHP);
-        dialogue.text = "You feel renewed strength!";
-
-        yield return new WaitForSeconds(2f);
-
-        state = BattleState.ENEMYTURN;
-        StartCoroutine(EnemyTurn());
-    }
-
     public void OnAttackButton()
     {
         if (state != BattleState.PLAYERTURN)
@@ -143,15 +130,6 @@ public class BattleSystem : MonoBehaviour
             return;
         }
         StartCoroutine(playerAttack());
-    }
-
-    public void OnHealButton()
-    {
-        if (state != BattleState.PLAYERTURN)
-        {
-            return;
-        }
-        StartCoroutine(playerHeal());
     }
 
     public void OnRight()

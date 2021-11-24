@@ -21,22 +21,37 @@ public class BattleHUD : MonoBehaviour
         frontName.text = list[0].unitName;
 
         frontName.text = list[0].unitName;
-        frontHp.GetComponent<Slider>().maxValue = list[0].maxHP;
-        frontHp.GetComponent<Slider>().value = list[0].currentHP;
-        
+        frontHp.setHealth(list[0].maxHP);
+        frontHp.setHealth(list[0].currentHP);
+
         topName.text = list[1].unitName;
-        topHp.GetComponent<Slider>().maxValue = list[1].maxHP;
-        topHp.GetComponent<Slider>().value = list[1].currentHP;
-        
+        topHp.setHealth(list[1].maxHP);
+        topHp.setHealth(list[1].currentHP);
+
         botName.text = list[2].unitName;
-        botHp.GetComponent<Slider>().maxValue = list[2].maxHP;
-        botHp.GetComponent<Slider>().value = list[2].currentHP;
+        botHp.setHealth(list[2].maxHP);
+        botHp.setHealth(list[2].currentHP);
 
         return;
     }
 
-    public void setHP(int hp)
+    public void setHP(int hp, int target)
     {
-        //hpSlider.value = hp;
+        // target: 0 = front, 1 = top, 2 = bot
+
+        switch (target)
+        {
+            case 0:
+                frontHp.setHealth(hp);
+                break;
+            case 1:
+                topHp.setHealth(hp);
+                break;
+            case 2:
+                botHp.setHealth(hp);
+                break;
+            default:
+                break;
+        }
     }
 }
