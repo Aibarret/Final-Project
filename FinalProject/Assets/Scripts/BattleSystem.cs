@@ -21,11 +21,11 @@ public class BattleSystem : MonoBehaviour
 
     public Text dialogue;
 
-    Unit playerUnit;
-    Unit enemyUnit;
-
     public BattleHUD playerHUD;
     public BattleHUD enemyHUD;
+
+    private int targetPosn;
+    public Text targetCharText;
 
 
     void Start()
@@ -35,6 +35,7 @@ public class BattleSystem : MonoBehaviour
         GameObject units = GameObject.Find("Units");
         AvailibleUnits unitList = units.GetComponent<AvailibleUnits>();
 
+        //TODO: Add in method call (or script?) that creates the team
         GameObject[] testPlayerTeam = new GameObject[3] { unitList.Andy, unitList.Aurelia, unitList.Denda };
         GameObject[] testEnemyTeam = new GameObject[3] { unitList.Spike, unitList.Zantz, unitList.Rione };
 
@@ -62,8 +63,15 @@ public class BattleSystem : MonoBehaviour
 
     void playerTurn()
     {
+        targetPosn = 0;
+        setTarget(targetPosn);
 
         dialogue.text = "Player Turn!";
+    }
+
+    public void setTarget(int posn)
+    {
+        targetCharText.text = eField.getUnits()[posn].unitName;
     }
 
     IEnumerator playerAttack()
@@ -134,13 +142,45 @@ public class BattleSystem : MonoBehaviour
 
     public void OnRight()
     {
-        pField.rotate(true);
-        playerHUD.setHUD(pField);
+        if (state == BattleState.PLAYERTURN)
+        {
+            pField.rotate(true);
+            playerHUD.setHUD(pField);
+        }
     }
 
     public void OnLeft()
     {
-        pField.rotate(false);
-        playerHUD.setHUD(pField);
+        if (state == BattleState.PLAYERTURN)
+        {
+            pField.rotate(false);
+            playerHUD.setHUD(pField);
+        }
+    }
+
+    public void OnTargetLeft()
+    {
+        if (state == BattleState.PLAYERTURN)
+        {
+            targetPosn -= 1;
+            if (targetPosn < 0)
+            {
+                targetPosn = 2;
+            }
+            setTarget(targetPosn);
+        }
+    }
+
+    public void OnTargetRight()
+    {
+        if (state == BattleState.PLAYERTURN)
+        {
+            targetPosn += 1;
+            if (targetPosn > 2)
+            {
+                targetPosn = 0;
+            }
+            setTarget(targetPosn);
+        }
     }
 }
