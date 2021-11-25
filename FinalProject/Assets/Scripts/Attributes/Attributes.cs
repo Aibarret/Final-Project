@@ -123,6 +123,6 @@ public class Attributes : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        battleSystem.endABI();
+        StartCoroutine(battleSystem.endABI());
     }
 }

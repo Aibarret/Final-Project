@@ -97,6 +97,8 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator playerAttack()
     {
+        yield return pField.fieldPassive(PassiveState.STARTATTACK);
+
         Unit[] attackUnits = pField.getUnits();
         dialogue.text = attackUnits[0].unitName + " attacks!";
 
@@ -116,6 +118,8 @@ public class BattleSystem : MonoBehaviour
         {
             dialogue.text = "They missed!";
         }
+
+        yield return pField.fieldPassive(PassiveState.ENDATTACK);
 
         StartCoroutine(EnemyTurn());
     }
@@ -155,10 +159,10 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(playerAttack());
     }
 
-    public void OnAbilityButton()
+    public IEnumerator OnAbilityButton()
     {
+        yield return pField.fieldPassive(PassiveState.STARTATTACK);
         Attributes abilityUser = pField.getUnits()[0].GetAttributes();
-
         abilityUser.ability();
     }
 
@@ -294,8 +298,10 @@ public class BattleSystem : MonoBehaviour
         dialogue.text = text;
     }
 
-    public void endABI()
+    public IEnumerator endABI()
     {
+        yield return pField.fieldPassive(PassiveState.ENDATTACK);
+
         StartCoroutine(EnemyTurn());
     }
 }
