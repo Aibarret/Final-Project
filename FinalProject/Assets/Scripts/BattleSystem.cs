@@ -62,7 +62,7 @@ public class BattleSystem : MonoBehaviour
         playerHUD.setHUD(pField);
         enemyHUD.setHUD(eField);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
         
         playerTurn();
@@ -108,8 +108,6 @@ public class BattleSystem : MonoBehaviour
         }
 
         StartCoroutine(EnemyTurn());
-
-
     }
 
     IEnumerator EnemyTurn()
@@ -145,6 +143,13 @@ public class BattleSystem : MonoBehaviour
             return;
         }
         StartCoroutine(playerAttack());
+    }
+
+    public void OnAbilityButton()
+    {
+        Attributes abilityUser = pField.getUnits()[0].GetAttributes();
+
+        abilityUser.ability(pField, eField, targetPosn);
     }
 
     public void OnRight()
@@ -249,5 +254,29 @@ public class BattleSystem : MonoBehaviour
         {
             return difference;
         }
+    }
+
+    public int ABIcustAttackDefend(int attack, int defend)
+    {
+        int difference = attack - defend;
+
+        if (difference < 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return difference;
+        }
+    }
+
+    public void ABIupdateDialogue(string text)
+    {
+        dialogue.text = text;
+    }
+
+    public void endABI()
+    {
+        StartCoroutine(EnemyTurn());
     }
 }
