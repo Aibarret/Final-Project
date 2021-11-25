@@ -896,6 +896,12 @@ MonoBehaviour:
   playerHUD: {fileID: 325621839}
   enemyHUD: {fileID: 1002924331}
   targetCharText: {fileID: 70566898}
+  fight: {fileID: 1535584441}
+  ability: {fileID: 1355549675}
+  rotatePartyRight: {fileID: 1584060008}
+  rotatePartyLeft: {fileID: 35256905}
+  rotateTargetRight: {fileID: 527219195}
+  rotateTargetLeft: {fileID: 2119872799}
 --- !u!4 &321694402
 Transform:
   m_ObjectHideFlags: 0
@@ -3164,7 +3170,7 @@ GameObject:
   - component: {fileID: 1355549676}
   - component: {fileID: 1355549675}
   m_Layer: 5
-  m_Name: Heal
+  m_Name: Ability
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

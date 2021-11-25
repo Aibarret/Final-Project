@@ -27,6 +27,13 @@ public class BattleSystem : MonoBehaviour
     private int targetPosn;
     public Text targetCharText;
 
+    public Button fight;
+    public Button ability;
+    public Button rotatePartyRight;
+    public Button rotatePartyLeft;
+    public Button rotateTargetRight;
+    public Button rotateTargetLeft;
+
 
     void Start()
     {
@@ -57,16 +64,20 @@ public class BattleSystem : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        state = BattleState.PLAYERTURN;
+        
         playerTurn();
     }
 
     void playerTurn()
     {
+        state = BattleState.PLAYERTURN;
+
         targetPosn = 0;
         setTarget(targetPosn);
 
         dialogue.text = "Player Turn!";
+
+        updateAllButtons(true);
     }
 
     public void setTarget(int posn)
@@ -103,26 +114,15 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator EnemyTurn()
     {
-    //    dialogue.text = enemyUnit.unitName + " attacks!";
+        state = BattleState.ENEMYTURN;
 
-    //    yield return new WaitForSeconds(1f);
-
-    //    bool isDead = playerUnit.takeDamage(enemyUnit.damage);
-
-    //    playerHUD.setHP(playerUnit.currentHP);
+        yield return new WaitForSeconds(1f);
+        dialogue.text = "Enemy Passes!";
 
         yield return new WaitForSeconds(1f);
 
-    //    if (isDead)
-    //    {
-    //        state = BattleState.LOST;
-    //        EndBattle();
-    //    }
-    //    else
-    //    {
-    //        state = BattleState.PLAYERTURN;
-    //        playerTurn();
-    //    }
+        playerTurn();
+
     }
 
     void EndBattle()
@@ -138,6 +138,8 @@ public class BattleSystem : MonoBehaviour
 
     public void OnAttackButton()
     {
+        updateAllButtons(false);
+
         if (state != BattleState.PLAYERTURN)
         {
             return;
@@ -147,6 +149,7 @@ public class BattleSystem : MonoBehaviour
 
     public void OnRight()
     {
+        updatePartyRotate(false);
         if (state == BattleState.PLAYERTURN)
         {
             pField.rotate(true);
@@ -156,6 +159,7 @@ public class BattleSystem : MonoBehaviour
 
     public void OnLeft()
     {
+        updatePartyRotate(false);
         if (state == BattleState.PLAYERTURN)
         {
             pField.rotate(false);
@@ -189,7 +193,37 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    // Funtions for making updating UI Buttons easier
+    public void updateAllButtons(bool isInteractible)
+    {
+        fight.interactable = isInteractible;
+        ability.interactable = isInteractible;
+        rotatePartyRight.interactable = isInteractible;
+        rotatePartyLeft.interactable = isInteractible;
+        rotateTargetRight.interactable = isInteractible;
+        rotateTargetLeft.interactable = isInteractible;
+    }
+
+    public void updateFightButtons(bool isInteractible)
+    {
+        fight.interactable = isInteractible;
+        rotateTargetRight.interactable = isInteractible;
+        rotateTargetLeft.interactable = isInteractible;
+    }
+
+    public void updatePartyRotate(bool isInteractible)
+    {
+        rotatePartyRight.interactable = isInteractible;
+        rotatePartyLeft.interactable = isInteractible;
+    }
+
+    public void updateAbility(bool isInteractible)
+    {
+        ability.interactable = isInteractible;
+    }
+
     // Furthur functions are intended to be used exclusivly by Abilties
+
 
     public void ABIupdateHealth(int hp, bool isEnemy, int target)
     {
