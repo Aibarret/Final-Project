@@ -12,6 +12,11 @@ public class PFieldManager : MonoBehaviour
     private Unit topUnit;
     private Unit botUnit;
 
+    private Attributes frontAtt;
+    private Attributes topAtt;
+    private Attributes botAtt;
+
+
     public Transform frontSlot;
     public Transform topSlot;
     public Transform botSlot;
@@ -23,12 +28,15 @@ public class PFieldManager : MonoBehaviour
         botGO = Instantiate(units[2], botSlot);
 
         frontUnit = frontGO.GetComponent<Unit>();
+        frontAtt = frontUnit.GetAttributes();
         frontUnit.setPosition(0);
 
         topUnit = topGO.GetComponent<Unit>();
+        topAtt = topUnit.GetAttributes();
         topUnit.setPosition(1);
         
         botUnit = botGO.GetComponent<Unit>();
+        botAtt = botUnit.GetAttributes();
         botUnit.setPosition(2);
 
         frontUnit.isEnemy = isEnemy;
@@ -54,15 +62,19 @@ public class PFieldManager : MonoBehaviour
 
             GameObject tempGO = botGO;
             Unit tempUnit = botUnit;
+            Attributes tempAtt = botAtt;
 
             botGO = frontGO;
             botUnit = frontUnit;
+            botAtt = frontAtt;
 
             frontGO = topGO;
             frontUnit = topUnit;
+            frontAtt = topAtt;
 
             topGO = tempGO;
             topUnit = tempUnit;
+            topAtt = tempAtt;
         }
         else
         {
@@ -72,21 +84,43 @@ public class PFieldManager : MonoBehaviour
 
             GameObject tempGO = botGO;
             Unit tempUnit = botUnit;
+            Attributes tempAtt = botAtt;
 
             botGO = topGO;
             botUnit = topUnit;
+            botAtt = topAtt;
 
             topGO = frontGO;
             topUnit = frontUnit;
+            topAtt = frontAtt;
 
             frontGO = tempGO;
             frontUnit = tempUnit;
+            frontAtt = tempAtt;
         }
         return;
+    }
+
+    public void resetFieldMODS()
+    {
+        frontUnit.resetMODS();
+        topUnit.resetMODS();
+        botUnit.resetMODS();
+    }
+
+    public IEnumerator fieldPassive(PassiveState phase)
+    {
+        yield return topAtt.passive(phase);
+        yield return botAtt.passive(phase);
     }
 
     public Unit[] getUnits()
     {
         return new Unit[3] { frontUnit, topUnit, botUnit };   
+    }
+
+    public Attributes[] GetAttributes()
+    {
+        return new Attributes[3] { frontAtt, topAtt, botAtt};
     }
 }

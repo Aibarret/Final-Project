@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST}
+public enum PassiveState { NONE, TURNSTART, STARTATTACK, ENDATTACK}
 
 public class BattleSystem : MonoBehaviour
 {
@@ -65,19 +66,28 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         
-        playerTurn();
+        StartCoroutine(playerTurn());
     }
 
-    void playerTurn()
+    IEnumerator playerTurn()
     {
         state = BattleState.PLAYERTURN;
 
+        yield return pField.fieldPassive(PassiveState.TURNSTART);
+        
         targetPosn = 0;
         setTarget(targetPosn);
 
         dialogue.text = "Player Turn!";
 
         updateAllButtons(true);
+    }
+
+    public void endTurn()
+    {
+        pField.resetFieldMODS();
+
+        StartCoroutine(EnemyTurn());
     }
 
     public void setTarget(int posn)
@@ -119,7 +129,7 @@ public class BattleSystem : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        playerTurn();
+        StartCoroutine(playerTurn());
 
     }
 
@@ -149,7 +159,7 @@ public class BattleSystem : MonoBehaviour
     {
         Attributes abilityUser = pField.getUnits()[0].GetAttributes();
 
-        abilityUser.ability(pField, eField, targetPosn);
+        abilityUser.ability();
     }
 
     public void OnRight()
@@ -229,6 +239,15 @@ public class BattleSystem : MonoBehaviour
 
     // Furthur functions are intended to be used exclusivly by Abilties
 
+    public PFieldManager[] ABIgetFields()
+    {
+        return new PFieldManager[2] { pField, eField };
+    }
+
+    public int ABIgetTargetPosn()
+    {
+        return targetPosn;
+    }
 
     public void ABIupdateHealth(int hp, bool isEnemy, int target)
     {

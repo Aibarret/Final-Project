@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class Attributes : MonoBehaviour
 {
 
@@ -16,12 +18,12 @@ public class Attributes : MonoBehaviour
 
     public int offense()
     {
-        return unitScript.damage;
+        return unitScript.damage + unitScript.getMODS("damage");
     }
 
     public int defense()
     {
-        return unitScript.defense;
+        return unitScript.defense + unitScript.getMODS("defense");
     }
 
     public void takeDamage(int dmg)
@@ -39,12 +41,39 @@ public class Attributes : MonoBehaviour
 
     }
 
-    public void ability(PFieldManager playerField, PFieldManager enemyField, int targetPosn)
+    public IEnumerator passive(PassiveState phase)
     {
-        StartCoroutine(wideSwing(playerField, enemyField, targetPosn));
+        switch(phase){
+            case PassiveState.TURNSTART:
+                yield return StartCoroutine(AttackBoost(battleSystem.ABIgetFields()[0].getUnits()[0]));
+                break;
+            default:
+                break;
+        }
     }
 
-    IEnumerator wideSwing(PFieldManager playerField, PFieldManager enemyField, int targetPosn)
+    public void ability()
+    {
+        StartCoroutine(WideSwing(battleSystem.ABIgetFields()[0], battleSystem.ABIgetFields()[1], battleSystem.ABIgetTargetPosn()));
+        return;
+    }
+
+    IEnumerator AttackBoost(Unit front)
+    {
+        battleSystem.ABIupdateDialogue(unitScript.unitName + "'s passive!");
+
+        yield return new WaitForSeconds(1f);
+
+        battleSystem.ABIupdateDialogue(unitScript.unitName + " Boosts damage by 3!");
+
+        front.setMODS("damage", 3);
+
+        yield return new WaitForSeconds(1f);
+
+        yield break;
+    }
+
+    IEnumerator WideSwing(PFieldManager playerField, PFieldManager enemyField, int targetPosn)
     {
         //Inflicts half damage to all opponent party members
 

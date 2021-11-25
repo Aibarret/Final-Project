@@ -5,12 +5,18 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     public string unitName;
-    public int unitLevel;
+
     public int damage;
+    private int damageMOD;
+
     public int defense;
+    private int defenseMOD;
 
     public int accuracy;
+    private int accuracyMOD;
+
     public int evasion;
+    private int evasionMOD;
 
     private int position;
     public bool isEnemy;
@@ -28,9 +34,50 @@ public class Unit : MonoBehaviour
         return attributeScript;
     }
 
-    private void Start()
+    public int getMODS(string stat)
     {
-        
+        switch (stat)
+        {
+            case "damage":
+                return damageMOD;
+            case "defense":
+                return defenseMOD;
+            case "accuracy":
+                return accuracyMOD;
+            case "evasion":
+                return evasionMOD;
+            default:
+                return 0;
+        }
+    }
+
+    public void setMODS(string stat, int mod)
+    {
+        switch (stat)
+        {
+            case "damage":
+                damageMOD += mod;
+                break;
+            case "defense":
+                defenseMOD += mod;
+                break;
+            case "accuracy":
+                accuracyMOD += mod;
+                break;
+            case "evasion":
+                evasionMOD += mod;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void resetMODS()
+    {
+        damageMOD = 0;
+        defenseMOD = 0;
+        accuracyMOD = 0;
+        evasionMOD = 0;
     }
 
     public int getPosition()
