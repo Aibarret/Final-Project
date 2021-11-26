@@ -128,11 +128,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitName: Andy
-  unitLevel: 53
   damage: 6
   defense: 0
   accuracy: 0
   evasion: 0
+  isEnemy: 0
+  isKO: 0
   maxHP: 26
   currentHP: 26
   slider: {fileID: 0}

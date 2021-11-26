@@ -57,6 +57,7 @@ public class BattleSystem : MonoBehaviour
         pField = playerField.GetComponent<PFieldManager>();
         pField.initializeField(playerTeam, false);
 
+
         eField = enemyField.GetComponent<PFieldManager>();
         eField.initializeField(enemyTeam, true);
 
@@ -71,16 +72,32 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator playerTurn()
     {
-        state = BattleState.PLAYERTURN;
+        if (pField.checkLoss() || eField.checkLoss())
+        {
+            if (pField.checkLoss())
+            {
+                state = BattleState.LOST;
+                EndBattle();
+            }
+            else
+            {
+                state = BattleState.WON;
+                EndBattle();
+            }
+        }
+        else
+        {
+            yield return pField.fieldPassive(PassiveState.TURNSTART);
 
-        yield return pField.fieldPassive(PassiveState.TURNSTART);
-        
-        targetPosn = 0;
-        setTarget(targetPosn);
+            state = BattleState.PLAYERTURN;
 
-        dialogue.text = "Player Turn!";
+            targetPosn = 0;
+            setTarget(targetPosn);
 
-        updateAllButtons(true);
+            dialogue.text = "Player Turn!";
+
+            updateAllButtons(true);
+        }
     }
 
     public void endTurn()
@@ -121,19 +138,35 @@ public class BattleSystem : MonoBehaviour
 
         yield return pField.fieldPassive(PassiveState.ENDATTACK);
 
-        StartCoroutine(EnemyTurn());
+        endTurn();
     }
 
     IEnumerator EnemyTurn()
     {
-        state = BattleState.ENEMYTURN;
+        if (pField.checkLoss() || eField.checkLoss())
+        {
+            if (pField.checkLoss())
+            {
+                state = BattleState.LOST;
+                EndBattle();
+            }
+            else
+            {
+                state = BattleState.WON;
+                EndBattle();
+            }
+        }
+        else
+        {
+            state = BattleState.ENEMYTURN;
 
-        yield return new WaitForSeconds(1f);
-        dialogue.text = "Enemy Passes!";
+            yield return new WaitForSeconds(1f);
+            dialogue.text = "Enemy Passes!";
 
-        yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1f);
 
-        StartCoroutine(playerTurn());
+            StartCoroutine(playerTurn());
+        }
 
     }
 
@@ -146,41 +179,53 @@ public class BattleSystem : MonoBehaviour
         {
             dialogue.text = "You were defeated.";
         }
+        updateAllButtons(false);
     }
 
     public void OnAttackButton()
     {
-        updateAllButtons(false);
-
         if (state != BattleState.PLAYERTURN)
         {
             return;
         }
-        StartCoroutine(playerAttack());
+        else
+        {
+            updateAllButtons(false);
+            StartCoroutine(playerAttack());
+        }   
     }
 
-    public IEnumerator OnAbilityButton()
+    public void OnAbilityButton()
     {
-        yield return pField.fieldPassive(PassiveState.STARTATTACK);
+        StartCoroutine(abilityEnumerator());
+        
         Attributes abilityUser = pField.getUnits()[0].GetAttributes();
+        
         abilityUser.ability();
+    }
+
+    IEnumerator abilityEnumerator()
+    {
+        yield return StartCoroutine(pField.fieldPassive(PassiveState.STARTATTACK));
     }
 
     public void OnRight()
     {
-        updatePartyRotate(false);
+        
         if (state == BattleState.PLAYERTURN)
         {
+            updatePartyRotate(false);
             pField.rotate(true);
             playerHUD.setHUD(pField);
+            
         }
     }
 
     public void OnLeft()
     {
-        updatePartyRotate(false);
         if (state == BattleState.PLAYERTURN)
         {
+            updatePartyRotate(false);
             pField.rotate(false);
             playerHUD.setHUD(pField);
         }
@@ -195,7 +240,16 @@ public class BattleSystem : MonoBehaviour
             {
                 targetPosn = 2;
             }
-            setTarget(targetPosn);
+
+            if (eField.getUnits()[targetPosn].isKO)
+            {
+                OnTargetLeft();
+            }
+            else
+            {
+                setTarget(targetPosn);
+            }
+            
         }
     }
 
@@ -208,7 +262,15 @@ public class BattleSystem : MonoBehaviour
             {
                 targetPosn = 0;
             }
-            setTarget(targetPosn);
+
+            if (eField.getUnits()[targetPosn].isKO)
+            {
+                OnTargetRight();
+            }
+            else
+            {
+                setTarget(targetPosn);
+            }
         }
     }
 
@@ -242,6 +304,20 @@ public class BattleSystem : MonoBehaviour
     }
 
     // Furthur functions are intended to be used exclusivly by Abilties
+
+    public void ABIkoRePosition(bool isEnemy)
+    {
+        if (isEnemy)
+        {
+            eField.rotate(false);
+            enemyHUD.setHUD(eField);
+        }
+        else
+        {
+            pField.rotate(false);
+            playerHUD.setHUD(pField);
+        }
+    }
 
     public PFieldManager[] ABIgetFields()
     {
@@ -298,10 +374,36 @@ public class BattleSystem : MonoBehaviour
         dialogue.text = text;
     }
 
+    public void ABIsetHud(bool isEnemy)
+    {
+        if (isEnemy)
+        {
+            enemyHUD.setHUD(eField);
+        }
+        else
+        {
+            playerHUD.setHUD(pField);
+        }
+    }
+
+    public void ABIwipe(bool isEnemy)
+    {
+        if (isEnemy)
+        {
+            state = BattleState.WON;
+            EndBattle();
+        }
+        else
+        {
+            state = BattleState.LOST;
+            EndBattle();
+        }
+    }
+
     public IEnumerator endABI()
     {
-        yield return pField.fieldPassive(PassiveState.ENDATTACK);
+        yield return new WaitForSeconds(1f); //pField.fieldPassive(PassiveState.ENDATTACK);
 
-        StartCoroutine(EnemyTurn());
+        endTurn();
     }
 }

@@ -128,12 +128,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitName: Aurelia
-  unitLevel: 0
   damage: 3
   defense: 0
   accuracy: 0
   evasion: 0
   isEnemy: 0
+  isKO: 0
   maxHP: 15
   currentHP: 15
   slider: {fileID: 0}

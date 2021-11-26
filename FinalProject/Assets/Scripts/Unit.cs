@@ -18,8 +18,10 @@ public class Unit : MonoBehaviour
     public int evasion;
     private int evasionMOD;
 
-    private int position;
+    public int position;
     public bool isEnemy;
+
+    public bool isKO;
 
     public int maxHP;
     public int currentHP;

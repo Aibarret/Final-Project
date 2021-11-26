@@ -31,14 +31,27 @@ public class Attributes : MonoBehaviour
         if (unitScript.currentHP - dmg <= 0)
         {
             unitScript.currentHP = 0;
+            battleSystem.ABIupdateHealth(unitScript.currentHP, unitScript.isEnemy, unitScript.getPosition());
+            knockOut();
         }
         else
         {
             unitScript.currentHP -= dmg;
+            battleSystem.ABIupdateHealth(unitScript.currentHP, unitScript.isEnemy, unitScript.getPosition());
         }
 
-        battleSystem.ABIupdateHealth(unitScript.currentHP, unitScript.isEnemy, unitScript.getPosition());
+        
 
+    }
+
+    public void knockOut()
+    {
+        unitScript.isKO = true;
+
+        if (unitScript.getPosition() == 0)
+        {
+            battleSystem.ABIkoRePosition(unitScript.isEnemy);
+        }   
     }
 
     public IEnumerator passive(PassiveState phase)
@@ -49,13 +62,12 @@ public class Attributes : MonoBehaviour
                 break;
             default:
                 break;
-        }
+        }   
     }
 
     public void ability()
     {
         StartCoroutine(WideSwing(battleSystem.ABIgetFields()[0], battleSystem.ABIgetFields()[1], battleSystem.ABIgetTargetPosn()));
-        return;
     }
 
     IEnumerator AttackBoost(Unit front)
@@ -69,8 +81,6 @@ public class Attributes : MonoBehaviour
         front.setMODS("damage", 3);
 
         yield return new WaitForSeconds(1f);
-
-        yield break;
     }
 
     IEnumerator WideSwing(PFieldManager playerField, PFieldManager enemyField, int targetPosn)

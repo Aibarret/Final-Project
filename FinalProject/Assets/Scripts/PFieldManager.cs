@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PFieldManager : MonoBehaviour
 {
+    BattleSystem battleSystem;
+
     private GameObject frontGO;
     private GameObject topGO;
     private GameObject botGO;
@@ -20,6 +22,11 @@ public class PFieldManager : MonoBehaviour
     public Transform frontSlot;
     public Transform topSlot;
     public Transform botSlot;
+
+    private void Start()
+    {
+        battleSystem = BattleSystem.FindObjectOfType<BattleSystem>();
+    }
 
     public void initializeField(GameObject[] units, bool isEnemy)
     {
@@ -55,7 +62,6 @@ public class PFieldManager : MonoBehaviour
     {
         if (isRight)
         {
-
             frontGO.transform.position = botSlot.position;
             botGO.transform.position = topSlot.position;
             topGO.transform.position = frontSlot.position;
@@ -98,7 +104,23 @@ public class PFieldManager : MonoBehaviour
             frontUnit = tempUnit;
             frontAtt = tempAtt;
         }
-        return;
+
+        frontUnit.position = 0;
+        topUnit.position = 1;
+        botUnit.position = 2;
+
+        if (frontUnit.isKO)
+        {
+            if (checkLoss())
+            {
+                battleSystem.ABIwipe(frontUnit.isEnemy);
+            }
+            else
+            {
+                rotate(isRight);
+            }
+            
+        }
     }
 
     public void resetFieldMODS()
@@ -106,6 +128,11 @@ public class PFieldManager : MonoBehaviour
         frontUnit.resetMODS();
         topUnit.resetMODS();
         botUnit.resetMODS();
+    }
+
+    public bool checkLoss()
+    {
+        return frontUnit.isKO && topUnit.isKO && botUnit.isKO;
     }
 
     public IEnumerator fieldPassive(PassiveState phase)
