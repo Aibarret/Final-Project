@@ -19,27 +19,17 @@ public class BattleHUD : MonoBehaviour
     {
         Unit[] list = field.getUnits();
 
-        print("start");
-
         frontName.text = list[0].unitName;
         frontHp.setMaxHealth(list[0].maxHP);
-        print(list[0].unitName + " " + list[0].currentHP);
         frontHp.setHealth(list[0].currentHP);
 
         topName.text = list[1].unitName;
         topHp.setMaxHealth(list[1].maxHP);
-        print(list[1].unitName + " " + list[1].currentHP);
         topHp.setHealth(list[1].currentHP);
 
         botName.text = list[2].unitName;
         botHp.setMaxHealth(list[2].maxHP);
-        print(list[2].unitName + " " + list[2].currentHP);
         botHp.setHealth(list[2].currentHP);
-    }
-
-    void setAllHUD()
-    {
-
     }
 
     public void setHP(int hp, int target)

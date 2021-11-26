@@ -107,6 +107,15 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(EnemyTurn());
     }
 
+    public void endEnemyTurn()
+    {
+        eField.resetFieldMODS();
+
+        print("doot Doot");
+
+        StartCoroutine(playerTurn());
+    }
+
     public void setTarget(int posn)
     {
         targetCharText.text = eField.getUnits()[posn].unitName;
@@ -136,6 +145,8 @@ public class BattleSystem : MonoBehaviour
             dialogue.text = "They missed!";
         }
 
+        yield return new WaitForSeconds(1f);
+
         yield return pField.fieldPassive(PassiveState.ENDATTACK);
 
         endTurn();
@@ -160,12 +171,18 @@ public class BattleSystem : MonoBehaviour
         {
             state = BattleState.ENEMYTURN;
 
-            yield return new WaitForSeconds(1f);
-            dialogue.text = "Enemy Passes!";
+            yield return eField.fieldPassive(PassiveState.TURNSTART);
+
+            dialogue.text = "Enemy Turn!";
 
             yield return new WaitForSeconds(1f);
 
-            StartCoroutine(playerTurn());
+            yield return eField.getUnits()[0].GetAttributes().enemyAction(eField, pField);
+
+            //yield return new WaitForSeconds(1f);
+            //dialogue.text = "Enemy Passes!";
+
+            //yield return new WaitForSeconds(1f);
         }
 
     }
@@ -319,9 +336,18 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    public PFieldManager[] ABIgetFields()
+    public PFieldManager ABIgetFields(bool isEnemy)
     {
-        return new PFieldManager[2] { pField, eField };
+        if (isEnemy)
+        {
+            return eField;
+        }
+        else
+        {
+            return pField;
+        }
+
+        
     }
 
     public int ABIgetTargetPosn()
@@ -400,10 +426,28 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    public IEnumerator endABI()
+    public bool isHit(Unit attacker, Unit defender)
     {
-        yield return new WaitForSeconds(1f); //pField.fieldPassive(PassiveState.ENDATTACK);
+        int hitRate = attacker.accuracy - defender.evasion;
 
-        endTurn();
+        return Random.Range(1, 101) > hitRate;
+    }
+
+    public IEnumerator endABI(bool isEnemy)
+    {
+        if (isEnemy)
+        {
+            yield return eField.fieldPassive(PassiveState.ENDATTACK);
+
+            print("scoot");
+
+            endEnemyTurn();
+        }
+        else
+        {
+            yield return pField.fieldPassive(PassiveState.ENDATTACK);
+
+            endTurn();
+        }
     }
 }

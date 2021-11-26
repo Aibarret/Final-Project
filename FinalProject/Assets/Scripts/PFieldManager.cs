@@ -150,4 +150,45 @@ public class PFieldManager : MonoBehaviour
     {
         return new Attributes[3] { frontAtt, topAtt, botAtt};
     }
+
+    public bool isUnitLow(int posn)
+    {
+        return getUnits()[posn].currentHP < getUnits()[posn].maxHP / 4;
+    }
+
+    public bool isAnyUnitLow()
+    {
+        return 
+            frontUnit.currentHP < frontUnit.maxHP / 4 ||
+            topUnit.currentHP < topUnit.maxHP / 4 ||
+            botUnit.currentHP < botUnit.maxHP / 4;
+    }
+
+    public bool isAllUnitLow()
+    {
+        return 
+            frontUnit.currentHP < frontUnit.maxHP / 4 &&
+            topUnit.currentHP < topUnit.maxHP / 4 &&
+            botUnit.currentHP < botUnit.maxHP / 4;
+    }
+
+    public bool AIrotateDirection()
+    {
+        if (isUnitLow(1) && isUnitLow(2))
+        {
+            return true;
+        } 
+        else if (isUnitLow(1))
+        {
+            return true;
+        }
+        else if (isUnitLow(2))
+        {
+            return false;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
