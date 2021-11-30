@@ -34,7 +34,7 @@ public class BattleHUD : MonoBehaviour
 
     public void setHP(int hp, int target)
     {
-        // target: 0 = front, 1 = top, 2 = bot
+        // target: 0 = front, 1 = top, 2 = bot 
 
         switch (target)
         {
