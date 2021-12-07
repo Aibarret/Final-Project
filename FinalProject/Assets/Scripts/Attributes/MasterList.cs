@@ -131,14 +131,14 @@ public class MasterList : MonoBehaviour
     private IEnumerator defaultAI(PFieldManager playerField, PFieldManager enemyField)
     {
         // Decides if will rotate party
-        if (enemyField.isUnitLow(0) && !enemyField.isAllUnitLow())
+        if (playerField.isUnitLow(0) && !playerField.isAllUnitLow())
         {
-            enemyField.rotate(enemyField.AIrotateDirection());
-            battleSystem.ABIsetHud(enemyField.getUnits()[0].isEnemy);
+            playerField.rotate(playerField.AIrotateDirection());
+            battleSystem.ABIsetHud(playerField.getUnits()[0].isEnemy);
 
             battleSystem.ABIupdateDialogue("Enemy Rotates!");
 
-            StartCoroutine(enemyField.getUnits()[0].GetAttributes().enemyAction(playerField, enemyField));
+            StartCoroutine(playerField.getUnits()[0].GetAttributes().enemyAction(playerField, enemyField));
         }
         else
         {
@@ -146,6 +146,8 @@ public class MasterList : MonoBehaviour
             battleSystem.ABIupdateDialogue(unitScript.unitName + " Attacks!");
 
             yield return new WaitForSeconds(1f);
+
+            yield return StartCoroutine(playerField.fieldPassive(PassiveState.STARTATTACK));
 
             if (battleSystem.isHit(unitScript, enemyField.getUnits()[0]))
             {
@@ -167,14 +169,14 @@ public class MasterList : MonoBehaviour
     {
 
         // Decides if will rotate party
-        if (enemyField.isUnitLow(0) && !enemyField.isAllUnitLow())
+        if (playerField.isUnitLow(0) && !playerField.isAllUnitLow())
         {
-            enemyField.rotate(enemyField.AIrotateDirection());
-            battleSystem.ABIsetHud(enemyField.getUnits()[0].isEnemy);
+            playerField.rotate(playerField.AIrotateDirection());
+            battleSystem.ABIsetHud(playerField.getUnits()[0].isEnemy);
 
             battleSystem.ABIupdateDialogue("Enemy Rotates!");
 
-            StartCoroutine(enemyField.getUnits()[0].GetAttributes().enemyAction(playerField, enemyField));
+            StartCoroutine(playerField.getUnits()[0].GetAttributes().enemyAction(playerField, enemyField));
         }
         else
         {
@@ -182,7 +184,7 @@ public class MasterList : MonoBehaviour
             if (enemyField.isAnyUnitLow())
             {
                 // Use ability
-                yield return StartCoroutine(enemyField.fieldPassive(PassiveState.STARTATTACK));
+                yield return StartCoroutine(playerField.fieldPassive(PassiveState.STARTATTACK));
 
                 StartCoroutine(WideSwing(playerField, enemyField, 0));
             }
@@ -192,6 +194,8 @@ public class MasterList : MonoBehaviour
                 battleSystem.ABIupdateDialogue(unitScript.unitName + " Attacks!");
 
                 yield return new WaitForSeconds(1f);
+
+                yield return StartCoroutine(playerField.fieldPassive(PassiveState.STARTATTACK));
 
                 if (battleSystem.isHit(unitScript, enemyField.getUnits()[0]))
                 {
@@ -213,19 +217,19 @@ public class MasterList : MonoBehaviour
     IEnumerator hawkingAI(PFieldManager playerField, PFieldManager enemyField)
     {
         // Decides if will rotate party
-        if (enemyField.isUnitLow(0) && !enemyField.isAllUnitLow())
+        if (playerField.isUnitLow(0) && !playerField.isAllUnitLow())
         {
-            enemyField.rotate(enemyField.AIrotateDirection());
-            battleSystem.ABIsetHud(enemyField.getUnits()[0].isEnemy);
+            playerField.rotate(playerField.AIrotateDirection());
+            battleSystem.ABIsetHud(playerField.getUnits()[0].isEnemy);
 
             battleSystem.ABIupdateDialogue("Enemy Rotates!");
 
-            StartCoroutine(enemyField.getUnits()[0].GetAttributes().enemyAction(playerField, enemyField));
+            StartCoroutine(playerField.getUnits()[0].GetAttributes().enemyAction(playerField, enemyField));
         }
         else
         {
             // Use ability
-            yield return StartCoroutine(enemyField.fieldPassive(PassiveState.STARTATTACK));
+            yield return StartCoroutine(playerField.fieldPassive(PassiveState.STARTATTACK));
 
             StartCoroutine(WideSwing(playerField, enemyField, 0));
         }
@@ -234,19 +238,19 @@ public class MasterList : MonoBehaviour
     IEnumerator deyeceAI(PFieldManager playerField, PFieldManager enemyField)
     {
         // Decides if will rotate party
-        if (enemyField.isUnitLow(0) && !enemyField.isAllUnitLow())
+        if (playerField.isUnitLow(0) && !playerField.isAllUnitLow())
         {
-            enemyField.rotate(enemyField.AIrotateDirection());
-            battleSystem.ABIsetHud(enemyField.getUnits()[0].isEnemy);
+            playerField.rotate(playerField.AIrotateDirection());
+            battleSystem.ABIsetHud(playerField.getUnits()[0].isEnemy);
 
             battleSystem.ABIupdateDialogue("Enemy Rotates!");
 
-            StartCoroutine(enemyField.getUnits()[0].GetAttributes().enemyAction(playerField, enemyField));
+            StartCoroutine(playerField.getUnits()[0].GetAttributes().enemyAction(playerField, enemyField));
         }
         else
         {
             // Use ability
-            yield return StartCoroutine(enemyField.fieldPassive(PassiveState.STARTATTACK));
+            yield return StartCoroutine(playerField.fieldPassive(PassiveState.STARTATTACK));
 
             StartCoroutine(WideSwing(playerField, enemyField, 0));
         }
