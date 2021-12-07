@@ -82,6 +82,19 @@ public class MasterList : MonoBehaviour
                     }
                 }
                 break;
+            case "Wizzaro":
+                if (!unitScript.isKO)
+                {
+                    switch (phase)
+                    {
+                        case PassiveState.TURNSTART:
+                            yield return StartCoroutine(MinorHeal(battleSystem.ABIgetFields(unitScript.isEnemy).getUnits()[0]));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                break;
             default:
                 break;
         }
@@ -98,8 +111,10 @@ public class MasterList : MonoBehaviour
                 yield return StartCoroutine(WindStrike(battleSystem.ABIgetFields(unitScript.isEnemy), battleSystem.ABIgetFields(!unitScript.isEnemy)));
                 break;
             case "Deyece":
-                print("case successful");
                 yield return StartCoroutine(heavensGamble(battleSystem.ABIgetFields(unitScript.isEnemy), battleSystem.ABIgetFields(!unitScript.isEnemy)));
+                break;
+            case "Wizzaro":
+                yield return StartCoroutine(Storm(battleSystem.ABIgetFields(!unitScript.isEnemy)));
                 break;
             default:
                 break;
@@ -118,6 +133,9 @@ public class MasterList : MonoBehaviour
                 break;
             case "Deyece":
                 yield return deyeceAI(pField, eField);
+                break;
+            case "Wizzaro":
+                yield return wizzaroAI(pField, eField);
                 break;
             default:
                 yield return defaultAI(pField, eField);
@@ -256,6 +274,27 @@ public class MasterList : MonoBehaviour
         }
     }
 
+    IEnumerator wizzaroAI(PFieldManager playerField, PFieldManager enemyField)
+    {
+        // Decides if will rotate party
+        if (playerField.isUnitLow(0) && !playerField.isAllUnitLow())
+        {
+            playerField.rotate(playerField.AIrotateDirection());
+            battleSystem.ABIsetHud(playerField.getUnits()[0].isEnemy);
+
+            battleSystem.ABIupdateDialogue("Enemy Rotates!");
+
+            StartCoroutine(playerField.getUnits()[0].GetAttributes().enemyAction(playerField, enemyField));
+        }
+        else
+        {
+            // Use ability
+            yield return StartCoroutine(playerField.fieldPassive(PassiveState.STARTATTACK));
+
+            StartCoroutine(WideSwing(playerField, enemyField, 0));
+        }
+    }
+
     // Below is a master list of all passive abilities in the game
 
     IEnumerator AttackBoost(Unit front)
@@ -281,12 +320,29 @@ public class MasterList : MonoBehaviour
         battleSystem.ABIupdateDialogue(unitScript.unitName + "'s passive!");
         yield return new WaitForSeconds(1f);
         battleSystem.ABIupdateDialogue(unitScript.unitName + " heals randomly!");
+
+        Random.seed = System.DateTime.Now.Millisecond;
         int healrate = -1 * Random.Range(1, 7);
         targets[0].GetAttributes().takeDamage(healrate);
+
+        Random.seed = System.DateTime.Now.Millisecond;
         healrate = -1 * Random.Range(1, 7);
         targets[1].GetAttributes().takeDamage(healrate);
+
+        Random.seed = System.DateTime.Now.Millisecond;
         healrate = -1 * Random.Range(1, 7);
         targets[2].GetAttributes().takeDamage(healrate);
+
+        yield return new WaitForSeconds(1f);
+    }
+
+    IEnumerator MinorHeal(Unit front)
+    {
+        battleSystem.ABIupdateDialogue(unitScript.unitName + "'s passive!");
+        yield return new WaitForSeconds(1f);
+        battleSystem.ABIupdateDialogue(unitScript.unitName + " heals!");
+        front.GetAttributes().takeDamage(-3);
+        yield return new WaitForSeconds(1f);
     }
 
     // Below is a master list of all active abilities in the game
@@ -306,6 +362,7 @@ public class MasterList : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        Random.seed = System.DateTime.Now.Millisecond;
         if (Random.Range(1, 101) <= frontHitRate)
         {
             battleSystem.ABIupdateDialogue("Deals " + battleSystem.ABIcustAttackDefend(att.offense() / 2, targets[0].GetAttributes().defense()) + " damage!");
@@ -318,6 +375,7 @@ public class MasterList : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        Random.seed = System.DateTime.Now.Millisecond;
         if (Random.Range(1, 101) <= topHitRate)
         {
             battleSystem.ABIupdateDialogue("Deals " + battleSystem.ABIcustAttackDefend(att.offense() / 2, targets[1].GetAttributes().defense()) + " damage!");
@@ -330,6 +388,7 @@ public class MasterList : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        Random.seed = System.DateTime.Now.Millisecond;
         if (Random.Range(1, 101) <= botHitRate)
         {
             battleSystem.ABIupdateDialogue("Deals " + battleSystem.ABIcustAttackDefend(att.offense() / 2, targets[2].GetAttributes().defense()) + " damage!");
@@ -359,6 +418,7 @@ public class MasterList : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        Random.seed = System.DateTime.Now.Millisecond;
         if (Random.Range(1, 101) <= topHitRate)
         {
             battleSystem.ABIupdateDialogue("Deals " + battleSystem.ABIcustAttackDefend(att.offense(), targets[1].GetAttributes().defense()) + " damage!");
@@ -371,6 +431,7 @@ public class MasterList : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        Random.seed = System.DateTime.Now.Millisecond;
         if (Random.Range(1, 101) <= botHitRate)
         {
             battleSystem.ABIupdateDialogue("Deals " + battleSystem.ABIcustAttackDefend(att.offense(), targets[2].GetAttributes().defense()) + " damage!");
@@ -398,6 +459,7 @@ public class MasterList : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        Random.seed = System.DateTime.Now.Millisecond;
         if (Random.Range(0, 2) > 0)
         {
             Unit[] targets = defenderField.getUnits();
@@ -425,6 +487,37 @@ public class MasterList : MonoBehaviour
             targets[0].GetAttributes().takeDamage(5);
             targets[1].GetAttributes().takeDamage(5);
             targets[2].GetAttributes().takeDamage(5);
+        }
+
+        yield return new WaitForSeconds(1f);
+
+        StartCoroutine(battleSystem.endABI(unitScript.isEnemy));
+    }
+
+    IEnumerator Storm(PFieldManager defenderField)
+    {
+        // Calls a random thunderstrike
+
+        battleSystem.ABIupdateDialogue(unitScript.unitName + " uses their ability!");
+
+        yield return new WaitForSeconds(1f);
+
+        battleSystem.ABIupdateDialogue(unitScript.unitName + " calls down a storm!");
+
+        Random.seed = System.DateTime.Now.Millisecond;
+        int targetNUM = Random.Range(0, 3);
+        Unit target = defenderField.getUnits()[targetNUM];
+
+        yield return new WaitForSeconds(1f);
+
+        if (battleSystem.isHit(this.unitScript, target))
+        {
+            battleSystem.ABIupdateDialogue("Struck " + target.unitName + "!");
+            target.GetAttributes().takeDamage(battleSystem.ABIcalcOffenseDefense(unitScript.GetAttributes(), target.GetAttributes()));
+        }
+        else
+        {
+            battleSystem.ABIupdateDialogue("Missed " + target.unitName + "!");
         }
 
         yield return new WaitForSeconds(1f);

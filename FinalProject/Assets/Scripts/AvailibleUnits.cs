@@ -17,4 +17,5 @@ public class AvailibleUnits : MonoBehaviour
     public GameObject dragomar;
     public GameObject hawking;
     public GameObject deyece;
+    public GameObject Wizzaro;
 }

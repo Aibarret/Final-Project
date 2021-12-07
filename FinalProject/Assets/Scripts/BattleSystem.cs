@@ -44,7 +44,7 @@ public class BattleSystem : MonoBehaviour
         AvailibleUnits unitList = units.GetComponent<AvailibleUnits>();
 
         //TODO: Add in method call (or script?) that creates the team
-        GameObject[] testPlayerTeam = new GameObject[3] { unitList.dragomar, unitList.hawking, unitList.deyece };
+        GameObject[] testPlayerTeam = new GameObject[3] { unitList.Wizzaro, unitList.hawking, unitList.deyece };
         GameObject[] testEnemyTeam = new GameObject[3] { unitList.dragomar, unitList.dragomar, unitList.dragomar };
 
         StartCoroutine(setUpBattle(testPlayerTeam, testEnemyTeam));
@@ -223,8 +223,8 @@ public class BattleSystem : MonoBehaviour
 
     public void OnAbilityButton()
     {
+        updateAllButtons(false);
         StartCoroutine(abilityEnumerator());
-       
     }
 
     IEnumerator abilityEnumerator()
@@ -437,6 +437,7 @@ public class BattleSystem : MonoBehaviour
     {
         int hitRate = attacker.accuracy - defender.evasion;
 
+        Random.seed = System.DateTime.Now.Millisecond;
         return Random.Range(1, 101) <= hitRate;
     }
 
