@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AvailibleUnits : MonoBehaviour
 {
+    // Test Units that DO NOT WORK
     public GameObject Andy;
     public GameObject Spike;
     public GameObject Aurelia;
@@ -11,4 +12,7 @@ public class AvailibleUnits : MonoBehaviour
     public GameObject Rione;
     public GameObject Zantz;
 
+    // Final Units
+
+    public GameObject dragomar;
 }

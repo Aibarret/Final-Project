@@ -2375,6 +2375,7 @@ MonoBehaviour:
   Denda: {fileID: 2044334727665315037, guid: 00131f561899d4d4ebd7e36520955877, type: 3}
   Rione: {fileID: 4603566099053470705, guid: d8dacba9ae386094ead74fb4d6f97a58, type: 3}
   Zantz: {fileID: 753136259714376965, guid: 1af582c0193df8f4ea417bd81ced7605, type: 3}
+  dragomar: {fileID: 9128043497241474850, guid: f19ef7fdc18707147be9d0e1167e48c4, type: 3}
 --- !u!1 &796899164
 GameObject:
   m_ObjectHideFlags: 0

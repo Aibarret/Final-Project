@@ -44,8 +44,8 @@ public class BattleSystem : MonoBehaviour
         AvailibleUnits unitList = units.GetComponent<AvailibleUnits>();
 
         //TODO: Add in method call (or script?) that creates the team
-        GameObject[] testPlayerTeam = new GameObject[3] { unitList.Andy, unitList.Aurelia, unitList.Denda };
-        GameObject[] testEnemyTeam = new GameObject[3] { unitList.Spike, unitList.Zantz, unitList.Rione };
+        GameObject[] testPlayerTeam = new GameObject[3] { unitList.dragomar, unitList.dragomar, unitList.dragomar };
+        GameObject[] testEnemyTeam = new GameObject[3] { unitList.dragomar, unitList.dragomar, unitList.dragomar };
 
         StartCoroutine(setUpBattle(testPlayerTeam, testEnemyTeam));
     }
@@ -87,6 +87,10 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
+            dialogue.text = "Player Turn!";
+
+            yield return new WaitForSeconds(1f);
+
             yield return pField.fieldPassive(PassiveState.TURNSTART);
 
             state = BattleState.PLAYERTURN;
@@ -94,7 +98,7 @@ public class BattleSystem : MonoBehaviour
             targetPosn = 0;
             setTarget(targetPosn);
 
-            dialogue.text = "Player Turn!";
+            dialogue.text = "What will you do?";
 
             updateAllButtons(true);
         }
@@ -111,7 +115,6 @@ public class BattleSystem : MonoBehaviour
     {
         eField.resetFieldMODS();
 
-        print("doot Doot");
 
         StartCoroutine(playerTurn());
     }
@@ -169,11 +172,17 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
+            dialogue.text = "Enemy Turn!";
+
+            yield return new WaitForSeconds(1f);
+
             state = BattleState.ENEMYTURN;
 
             yield return eField.fieldPassive(PassiveState.TURNSTART);
 
-            dialogue.text = "Enemy Turn!";
+            yield return new WaitForSeconds(1f);
+
+            dialogue.text = "Choosing Actions!";
 
             yield return new WaitForSeconds(1f);
 
