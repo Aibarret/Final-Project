@@ -44,7 +44,7 @@ public class BattleSystem : MonoBehaviour
         AvailibleUnits unitList = units.GetComponent<AvailibleUnits>();
 
         //TODO: Add in method call (or script?) that creates the team
-        GameObject[] testPlayerTeam = new GameObject[3] { unitList.dragomar, unitList.dragomar, unitList.dragomar };
+        GameObject[] testPlayerTeam = new GameObject[3] { unitList.dragomar, unitList.hawking, unitList.deyece };
         GameObject[] testEnemyTeam = new GameObject[3] { unitList.dragomar, unitList.dragomar, unitList.dragomar };
 
         StartCoroutine(setUpBattle(testPlayerTeam, testEnemyTeam));
@@ -138,7 +138,7 @@ public class BattleSystem : MonoBehaviour
 
         int hitPercentage = attacker.accuracy - target.evasion;
 
-        if (Random.Range(1, 101) >= hitPercentage)
+        if (Random.Range(1, 101) <= hitPercentage)
         {
             dialogue.text = "Deals " + ABIcalcOffenseDefense(attacker.GetAttributes(), target.GetAttributes()) + " damage!";
             target.GetAttributes().takeDamage(ABIcalcOffenseDefense(attacker.GetAttributes(), target.GetAttributes()));
@@ -224,15 +224,15 @@ public class BattleSystem : MonoBehaviour
     public void OnAbilityButton()
     {
         StartCoroutine(abilityEnumerator());
-        
-        Attributes abilityUser = pField.getUnits()[0].GetAttributes();
-        
-        abilityUser.ability();
+       
     }
 
     IEnumerator abilityEnumerator()
     {
         yield return StartCoroutine(pField.fieldPassive(PassiveState.STARTATTACK));
+        Attributes abilityUser = pField.getUnits()[0].GetAttributes();
+
+        abilityUser.ability();
     }
 
     public void OnRight()
@@ -355,8 +355,6 @@ public class BattleSystem : MonoBehaviour
         {
             return pField;
         }
-
-        
     }
 
     public int ABIgetTargetPosn()
@@ -439,7 +437,7 @@ public class BattleSystem : MonoBehaviour
     {
         int hitRate = attacker.accuracy - defender.evasion;
 
-        return Random.Range(1, 101) > hitRate;
+        return Random.Range(1, 101) <= hitRate;
     }
 
     public IEnumerator endABI(bool isEnemy)

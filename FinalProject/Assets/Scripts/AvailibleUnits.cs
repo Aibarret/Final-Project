@@ -15,4 +15,6 @@ public class AvailibleUnits : MonoBehaviour
     // Final Units
 
     public GameObject dragomar;
+    public GameObject hawking;
+    public GameObject deyece;
 }
