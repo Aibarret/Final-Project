@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitName: Hawking
-  damage: 2
+  damage: 4
   defense: 3
   accuracy: 120
   evasion: 50

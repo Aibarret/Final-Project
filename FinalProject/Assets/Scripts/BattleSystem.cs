@@ -364,6 +364,7 @@ public class BattleSystem : MonoBehaviour
 
     public void ABIupdateHealth(int hp, bool isEnemy, int target)
     {
+        print(target);
         if (isEnemy)
         {
             enemyHUD.setHP(hp, target);

@@ -470,9 +470,10 @@ public class MasterList : MonoBehaviour
 
             battleSystem.ABIupdateDialogue("All opponent's took damage!");
 
-            targets[0].GetAttributes().takeDamage(5);
-            targets[1].GetAttributes().takeDamage(5);
+
             targets[2].GetAttributes().takeDamage(5);
+            targets[1].GetAttributes().takeDamage(5);
+            targets[0].GetAttributes().takeDamage(5);
         }
         else
         {
