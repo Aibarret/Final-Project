@@ -35,8 +35,15 @@ public class BattleSystem : MonoBehaviour
     public Button rotateTargetRight;
     public Button rotateTargetLeft;
 
+    public GameObject tutorial;
+    public AudioClip battleMusic;
+    public void onGameStart()
+    {
+        tutorial.SetActive(false);
+        startCombat();
+    }
 
-    void Start()
+    void startCombat()
     {
         state = BattleState.START;
 
