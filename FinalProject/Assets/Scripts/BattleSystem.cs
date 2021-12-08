@@ -36,9 +36,12 @@ public class BattleSystem : MonoBehaviour
     public Button rotateTargetLeft;
 
     public GameObject tutorial;
-    public AudioClip battleMusic;
+    public AudioSource battleMusic;
+    public AudioSource click;
+
     public void onGameStart()
     {
+        click.Play();
         tutorial.SetActive(false);
         startCombat();
     }
@@ -217,6 +220,7 @@ public class BattleSystem : MonoBehaviour
 
     public void OnAttackButton()
     {
+        click.Play();
         if (state != BattleState.PLAYERTURN)
         {
             return;
@@ -230,6 +234,7 @@ public class BattleSystem : MonoBehaviour
 
     public void OnAbilityButton()
     {
+        click.Play();
         updateAllButtons(false);
         StartCoroutine(abilityEnumerator());
     }
@@ -244,7 +249,7 @@ public class BattleSystem : MonoBehaviour
 
     public void OnRight()
     {
-        
+        click.Play();
         if (state == BattleState.PLAYERTURN)
         {
             updatePartyRotate(false);
@@ -256,6 +261,7 @@ public class BattleSystem : MonoBehaviour
 
     public void OnLeft()
     {
+        click.Play();
         if (state == BattleState.PLAYERTURN)
         {
             updatePartyRotate(false);
@@ -266,6 +272,7 @@ public class BattleSystem : MonoBehaviour
 
     public void OnTargetLeft()
     {
+        click.Play();
         if (state == BattleState.PLAYERTURN)
         {
             targetPosn -= 1;
@@ -288,6 +295,7 @@ public class BattleSystem : MonoBehaviour
 
     public void OnTargetRight()
     {
+        click.Play();
         if (state == BattleState.PLAYERTURN)
         {
             targetPosn += 1;
