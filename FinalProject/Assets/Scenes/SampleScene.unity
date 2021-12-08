@@ -2378,6 +2378,9 @@ MonoBehaviour:
   dragomar: {fileID: 9128043497241474850, guid: f19ef7fdc18707147be9d0e1167e48c4, type: 3}
   hawking: {fileID: 8076644098951920486, guid: 19e0ea5f6c2c8e94fb8f5bde71d5c8c6, type: 3}
   deyece: {fileID: 6202783003413826134, guid: 5be06e493b7cda6469fd8f989cad70ad, type: 3}
+  Wizzaro: {fileID: 1256645926953497422, guid: fa4b31de83871f0418b043dea4ed2042, type: 3}
+  Sir: {fileID: 2951273946474709777, guid: ec2fb9d7e6180624a8b24e5012aa1a01, type: 3}
+  ShieldLad: {fileID: 5712762978956961786, guid: 661c76ca0d62b98449288014a37a0fbf, type: 3}
 --- !u!1 &796899164
 GameObject:
   m_ObjectHideFlags: 0

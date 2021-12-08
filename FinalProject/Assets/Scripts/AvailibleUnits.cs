@@ -18,4 +18,6 @@ public class AvailibleUnits : MonoBehaviour
     public GameObject hawking;
     public GameObject deyece;
     public GameObject Wizzaro;
+    public GameObject Sir;
+    public GameObject ShieldLad;
 }

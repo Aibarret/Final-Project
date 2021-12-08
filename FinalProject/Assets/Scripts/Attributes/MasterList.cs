@@ -95,6 +95,19 @@ public class MasterList : MonoBehaviour
                     }
                 }
                 break;
+            case "Sir":
+                if (!unitScript.isKO)
+                {
+                    switch (phase)
+                    {
+                        case PassiveState.STARTATTACK:
+                            yield return StartCoroutine(AttackBoost(battleSystem.ABIgetFields(unitScript.isEnemy).getUnits()[0]));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                break;
             default:
                 break;
         }
@@ -116,6 +129,9 @@ public class MasterList : MonoBehaviour
             case "Wizzaro":
                 yield return StartCoroutine(Storm(battleSystem.ABIgetFields(!unitScript.isEnemy)));
                 break;
+            case "Sir":
+                yield return StartCoroutine(ShaketheReserves(battleSystem.ABIgetFields(unitScript.isEnemy), battleSystem.ABIgetFields(!unitScript.isEnemy)));
+                break;
             default:
                 break;
         }
@@ -136,6 +152,9 @@ public class MasterList : MonoBehaviour
                 break;
             case "Wizzaro":
                 yield return wizzaroAI(pField, eField);
+                break;
+            case "Sir":
+                yield return sirAI(pField, eField);
                 break;
             default:
                 yield return defaultAI(pField, eField);
@@ -249,7 +268,7 @@ public class MasterList : MonoBehaviour
             // Use ability
             yield return StartCoroutine(playerField.fieldPassive(PassiveState.STARTATTACK));
 
-            StartCoroutine(WideSwing(playerField, enemyField, 0));
+            StartCoroutine(WindStrike(playerField, enemyField));
         }
     }
 
@@ -270,7 +289,7 @@ public class MasterList : MonoBehaviour
             // Use ability
             yield return StartCoroutine(playerField.fieldPassive(PassiveState.STARTATTACK));
 
-            StartCoroutine(WideSwing(playerField, enemyField, 0));
+            StartCoroutine(heavensGamble(playerField, enemyField));
         }
     }
 
@@ -291,7 +310,55 @@ public class MasterList : MonoBehaviour
             // Use ability
             yield return StartCoroutine(playerField.fieldPassive(PassiveState.STARTATTACK));
 
-            StartCoroutine(WideSwing(playerField, enemyField, 0));
+            StartCoroutine(Storm(enemyField));
+        }
+    }
+
+    IEnumerator sirAI(PFieldManager playerField, PFieldManager enemyField)
+    {
+        // Decides if will rotate party
+        if (playerField.isUnitLow(0) && !playerField.isAllUnitLow())
+        {
+            playerField.rotate(playerField.AIrotateDirection());
+            battleSystem.ABIsetHud(playerField.getUnits()[0].isEnemy);
+
+            battleSystem.ABIupdateDialogue("Enemy Rotates!");
+
+            StartCoroutine(playerField.getUnits()[0].GetAttributes().enemyAction(playerField, enemyField));
+        }
+        else
+        {
+            // decides action
+            if (enemyField.isUnitLow(1) || enemyField.isUnitLow(2))
+            {
+                // Use ability
+                yield return StartCoroutine(playerField.fieldPassive(PassiveState.STARTATTACK));
+
+                StartCoroutine(ShaketheReserves(playerField, enemyField));
+            }
+            else
+            {
+                // Use Attack
+                battleSystem.ABIupdateDialogue(unitScript.unitName + " Attacks!");
+
+                yield return new WaitForSeconds(1f);
+
+                yield return StartCoroutine(playerField.fieldPassive(PassiveState.STARTATTACK));
+
+                if (battleSystem.isHit(unitScript, enemyField.getUnits()[0]))
+                {
+                    battleSystem.ABIupdateDialogue("Deals " + battleSystem.ABIcalcOffenseDefense(att, enemyField.getUnits()[0].attributeScript) + " damage!");
+                    enemyField.getUnits()[0].attributeScript.takeDamage(battleSystem.ABIcalcOffenseDefense(att, enemyField.getUnits()[0].attributeScript));
+                }
+                else
+                {
+                    battleSystem.ABIupdateDialogue("They missed!");
+                }
+
+                yield return new WaitForSeconds(1f);
+
+                StartCoroutine(battleSystem.endABI(true));
+            }
         }
     }
 
@@ -520,6 +587,33 @@ public class MasterList : MonoBehaviour
         {
             battleSystem.ABIupdateDialogue("Missed " + target.unitName + "!");
         }
+
+        yield return new WaitForSeconds(1f);
+
+        StartCoroutine(battleSystem.endABI(unitScript.isEnemy));
+    }
+
+    IEnumerator ShaketheReserves(PFieldManager attackerField, PFieldManager defenderField)
+    {
+        // Rotates the opponents field in a random direction
+
+        battleSystem.ABIupdateDialogue(unitScript.unitName + " Lets loose a roar!");
+
+        yield return new WaitForSeconds(1f);
+
+        Random.seed = System.DateTime.Now.Millisecond;
+        if (Random.Range(0, 2) == 1)
+        {
+            defenderField.rotate(true);
+        }
+        else
+        {
+            defenderField.rotate(false);
+        }
+
+        battleSystem.ABIupdateDialogue("The foes are rattled!");
+
+        battleSystem.ABIsetHud(defenderField.getUnits()[0].isEnemy);
 
         yield return new WaitForSeconds(1f);
 
