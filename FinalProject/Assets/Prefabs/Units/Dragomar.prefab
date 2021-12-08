@@ -136,8 +136,8 @@ MonoBehaviour:
   position: 0
   isEnemy: 0
   isKO: 0
-  maxHP: 20
-  currentHP: 20
+  maxHP: 17
+  currentHP: 17
   slider: {fileID: 0}
   graphic: {fileID: 7337103549753746227}
   attributeScript: {fileID: 6647559200755693976}

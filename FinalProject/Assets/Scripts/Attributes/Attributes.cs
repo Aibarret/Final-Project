@@ -29,11 +29,15 @@ public class Attributes : MonoBehaviour
 
     public void takeDamage(int dmg)
     {
-        if (unitScript.currentHP - dmg <= 0)
+        if (unitScript.currentHP - dmg <= 0 || unitScript.isKO)
         {
             unitScript.currentHP = 0;
             battleSystem.ABIupdateHealth(unitScript.currentHP, unitScript.isEnemy, unitScript.getPosition());
             knockOut();
+        } else if (unitScript.currentHP - dmg >= unitScript.maxHP)
+        {
+            unitScript.currentHP = unitScript.maxHP;
+            battleSystem.ABIupdateHealth(unitScript.currentHP, unitScript.isEnemy, unitScript.getPosition());
         }
         else
         {
