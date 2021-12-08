@@ -44,7 +44,7 @@ public class BattleSystem : MonoBehaviour
         AvailibleUnits unitList = units.GetComponent<AvailibleUnits>();
 
         //TODO: Add in method call (or script?) that creates the team
-        GameObject[] testPlayerTeam = new GameObject[3] { unitList.Wizzaro, unitList.Sir, unitList.deyece };
+        GameObject[] testPlayerTeam = new GameObject[3] { unitList.ShieldLad, unitList.Sir, unitList.deyece };
         GameObject[] testEnemyTeam = new GameObject[3] { unitList.dragomar, unitList.dragomar, unitList.dragomar };
 
         StartCoroutine(setUpBattle(testPlayerTeam, testEnemyTeam));
