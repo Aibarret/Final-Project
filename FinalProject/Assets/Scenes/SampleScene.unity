@@ -1092,7 +1092,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 890e4953890eb3e44b5d013985977de4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 
   state: 0
   playerPrefab: {fileID: 2809930524744880855, guid: 2141632a657f18f48bcb0d8e49c65af0, type: 3}
   enemyPrefab: {fileID: 8942200997355112050, guid: 3478320327007fc4fa2b054a315a1062, type: 3}
@@ -2800,6 +2799,13 @@ MonoBehaviour:
   Wizzaro: {fileID: 1256645926953497422, guid: fa4b31de83871f0418b043dea4ed2042, type: 3}
   Sir: {fileID: 2951273946474709777, guid: ec2fb9d7e6180624a8b24e5012aa1a01, type: 3}
   ShieldLad: {fileID: 5712762978956961786, guid: 661c76ca0d62b98449288014a37a0fbf, type: 3}
+  unitList:
+  - {fileID: 9128043497241474850, guid: f19ef7fdc18707147be9d0e1167e48c4, type: 3}
+  - {fileID: 8076644098951920486, guid: 19e0ea5f6c2c8e94fb8f5bde71d5c8c6, type: 3}
+  - {fileID: 6202783003413826134, guid: 5be06e493b7cda6469fd8f989cad70ad, type: 3}
+  - {fileID: 5712762978956961786, guid: 661c76ca0d62b98449288014a37a0fbf, type: 3}
+  - {fileID: 2951273946474709777, guid: ec2fb9d7e6180624a8b24e5012aa1a01, type: 3}
+  - {fileID: 1256645926953497422, guid: fa4b31de83871f0418b043dea4ed2042, type: 3}
 --- !u!1 &774624048
 GameObject:
   m_ObjectHideFlags: 0

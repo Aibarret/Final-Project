@@ -8,7 +8,6 @@ public enum PassiveState { NONE, TURNSTART, STARTATTACK, ENDATTACK}
 
 public class BattleSystem : MonoBehaviour
 {
-    public string debug;
 
     public BattleState state;
     public GameObject playerPrefab;
@@ -51,11 +50,44 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.START;
 
         GameObject units = GameObject.Find("Units");
-        AvailibleUnits unitList = units.GetComponent<AvailibleUnits>();
+        AvailibleUnits availibleUnits = units.GetComponent<AvailibleUnits>();
 
-        //TODO: Add in method call (or script?) that creates the team
-        GameObject[] testPlayerTeam = new GameObject[3] { unitList.ShieldLad, unitList.Sir, unitList.deyece };
-        GameObject[] testEnemyTeam = new GameObject[3] { unitList.dragomar, unitList.Wizzaro, unitList.hawking };
+        //Teams are generated randomly
+
+        List<GameObject> newUnits = new List<GameObject>(availibleUnits.unitList);
+
+        GameObject[] testPlayerTeam = new GameObject[3];
+        GameObject[] testEnemyTeam = new GameObject[3];
+
+        Random.seed = System.DateTime.Now.Millisecond;
+        int team = Random.Range(0, 6);
+        testPlayerTeam[0] = newUnits[team];
+        newUnits.Remove(newUnits[team]);
+
+        Random.seed = System.DateTime.Now.Millisecond;
+        team = Random.Range(0, 5);
+        testPlayerTeam[1] = newUnits[team];
+        newUnits.Remove(newUnits[team]);
+
+        Random.seed = System.DateTime.Now.Millisecond;
+        team = Random.Range(0, 4);
+        testPlayerTeam[2] = newUnits[team];
+        newUnits.Remove(newUnits[team]);
+
+        Random.seed = System.DateTime.Now.Millisecond;
+        team = Random.Range(0, 3);
+        testEnemyTeam[0] = newUnits[team];
+        newUnits.Remove(newUnits[team]);
+
+        Random.seed = System.DateTime.Now.Millisecond;
+        team = Random.Range(0, 2);
+        testEnemyTeam[1] = newUnits[team];
+        newUnits.Remove(newUnits[team]);
+
+        Random.seed = System.DateTime.Now.Millisecond;
+        team = 0;
+        testEnemyTeam[2] = newUnits[team];
+        newUnits.Remove(newUnits[team]);
 
         StartCoroutine(setUpBattle(testPlayerTeam, testEnemyTeam));
     }

@@ -20,4 +20,6 @@ public class AvailibleUnits : MonoBehaviour
     public GameObject Wizzaro;
     public GameObject Sir;
     public GameObject ShieldLad;
+
+    public GameObject[] unitList;
 }
